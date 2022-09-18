@@ -1,24 +1,18 @@
-import { StatusBar, View, Text, TouchableHighlight, StyleSheet, TextInput, FlatList, ToastAndroid, Platform, Alert } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { useState, useContext } from "react";
+import { StatusBar, View, Text, TouchableHighlight, StyleSheet, TextInput, ToastAndroid, Platform, Alert } from "react-native";
+import { useState, useContext, useEffect } from "react";
 import fetchDictionaryData from "../api/fetchData";
 import { RandomWord } from "./RandomWord";
 import { DictionaryContext } from "../Context/ductionaryAppContext";
 import { Result } from "./Results";
+import getRandomWord from "../api/FetchRandomWord";
+import { tostMessage } from "../api/toastMessage";
 
 const validFiledInput = (string: string) => {
   let regex = new RegExp("^[a-zA-Z ]+$");
   return regex.test(string);
 };
-function tostMessage(msg: string) {
-  if (Platform.OS === 'android') {
-    ToastAndroid.show(msg, ToastAndroid.SHORT)
-  } else {
-    Alert.alert(msg);
-  }
-}
 
-export const Home = (props) => {
+export const Home = (props: { navigation: any; }) => {
   const [inputWord, setInputWord] = useState<string>('')
   const { dictionaryData, setDictionaryData } = useContext(DictionaryContext)
 
@@ -32,7 +26,6 @@ export const Home = (props) => {
       tostMessage('Invalid Input: Only Strings')
     }
   }
-
   const submitHandler = () => {
     setDictionaryData([])
     if (inputWord.length > 1) {
@@ -74,8 +67,7 @@ export const Home = (props) => {
       </View>
       {
         dictionaryData.length != 0
-          ?<Result data={dictionaryData} navigation={props.navigation}
-          />
+          ? <Result data={dictionaryData} navigation={props.navigation} />
           : <RandomWord />
       }
     </View>

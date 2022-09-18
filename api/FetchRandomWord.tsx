@@ -1,12 +1,8 @@
 import axios from "axios";
-import Asteroid from '../interface/Asteroid'
-import {API_KEY} from '@env';
 
-async function getRandomAstroidInfo() {
-    console.log('api called');
-    
+async function getRandomWord() {
     try {
-        const response = await axios.get<Asteroid>(`https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=${API_KEY}`);           
+        const response = await axios.get(`https://random-words-api.vercel.app/word`);           
         return response.data;
     } catch (error) {
         if(axios.isAxiosError(error)){
@@ -19,4 +15,4 @@ async function getRandomAstroidInfo() {
     }
 }
 
-export default getRandomAstroidInfo;
+export default getRandomWord;

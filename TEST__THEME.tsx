@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Appearance } from 'react-native';
 
 export default function App() {
-  const [theme, setTheme] = useState();
+  const [theme, setTheme] = useState('');
   Appearance.addChangeListener((app)=>{
     if(app.colorScheme === 'light'){
       setTheme('white')
@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <View style={[styles.container, {backgroundColor: theme}]}>
-      <Text style={{color: theme==='black'?'white':'black'}}>{theme}</Text>
+      <Text style={{color: theme ==='black'?'white':'black'}}>{theme}</Text>
       <StatusBar style="auto" hidden />
     </View>
   );

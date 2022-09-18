@@ -1,46 +1,37 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { StatusBar, View, Text, TouchableHighlight, StyleSheet, TextInput, FlatList, ToastAndroid, Platform, Alert } from "react-native";
 import { DictionaryContext } from "../Context/ductionaryAppContext";
+import { PofContainer } from "./pofContainer";
+import SoundPlayer from 'react-native-sound-player'
+import PlayAudio from "./PlayAudio";
 
 export const Word = ({ route }: any) => {
-    const { dictionaryData, setDictionaryData } = useContext(DictionaryContext)
+    const { dictionaryData } = useContext(DictionaryContext)
     const { word, phonetic } = route.params;
-    const [partOfSpeech, setpartOfSpeech] = useState<string[]>([]);
-    const [definations, setDefinations] = useState<string[]>([]);
-    const [examples, setExamples] = useState<string[]>([]);
-    const [list, setList] = useState<any[]>([]);
-
-    // const {phonetic, meanings: [{ definitions: [{ definition }] }], word } = item
-
+    const [phoneticsAud, setPhoneticsAud] = useState<any[]>([])
+    const [list, setList] = useState<any>([]);
 
     useEffect(() => {
-        dictionaryData.map((item) => {
-
-            console.log('--------------start-----------');
-
-            const {meanings} = item
-            meanings.map(element => {
-                // console.log("ex: pOS---",element["partOfSpeech"]);
+        dictionaryData.map((item: { [x: string]: { [x: string]: any; }; meanings?: any; }) => {
+            setPhoneticsAud((prev:any) => [...prev, item["phonetics"]["0"]["audio"]])
+            
+            const { meanings } = item
+            meanings.map((element: { [x: string]: any[]; }) => {
                 const partOfSpeach = element["partOfSpeech"]
-
-                // setpartOfSpeech(prevState=>[...prevState, element["partOfSpeech"]])
                 element["definitions"].map(element => {
                     const defination = element["definition"]
                     const example = element["example"]
 
-                    // console.log("definition--*:",element["definition"]);
-                    // console.log("example--*:",element["example"]);
-                    // setDefinations(prevState=>[...prevState, element["definition"]])
-                    // setExamples(prevState=>[...prevState, element["example"]])
+                    const updatedData = {
+                        pof: partOfSpeach, def: defination, ex: example
+                    }
 
-                    // console.log("ther data---:", partOfSpeach, defination, example);
-                    
-                    setList(prevState=>[...prevState, partOfSpeach, defination, example])
+                    setList((prevState: any) => [...prevState, updatedData])
                 });
             });
-            console.log('--------------end-----------');
-        })
-    }, [])
+        }) 
+        
+    },[])
 
     return (
         <View style={styles.conatiner}>
@@ -50,18 +41,12 @@ export const Word = ({ route }: any) => {
                 <Text>Pronunciation: {phonetic}</Text>
             </View>
             <View style={styles.word__detail}>
-                {/* <Text>{partOfSpeech.charAt(0).toUpperCase() + partOfSpeech.slice(1)}</Text> */}
-                {
-                    list.map((item)=>{
-                        console.log("---",item);
-                        
-                        return(
-                            <Text>
-                                {item}
-                            </Text>
-                        )
-                    })
-                }
+
+            <PofContainer list={list} pof={"verb"} />
+            <PofContainer list={list} pof={"noun"} />
+            <PofContainer list={list} pof={"adverb"} />
+
+            <PlayAudio phoneticsAud={phoneticsAud[0]} />
             </View>
         </View>
     )
@@ -89,5 +74,18 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         backgroundColor: 'white',
         borderRadius: 5,
+    },
+    pof_container:{
+        paddingBottom: 10,
+        marginBottom: 10,
+        borderBottomColor: '#555',
+        borderBottomWidth: 1
+    },
+    pof_text:{
+        fontSize: 20,
+    },
+    playIcon_container:{
+        flex: 1,
+        justifyContent: 'flex-end'
     }
 })

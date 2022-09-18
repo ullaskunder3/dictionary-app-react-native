@@ -1,16 +1,8 @@
-import { View, Text, FlatList, TouchableHighlight, TouchableOpacity, StyleSheet, TextInput, ToastAndroid, Platform, Alert } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { useContext, useState } from "react";
-import fetchDictionaryData from "../api/fetchData";
-import { DictionaryContext } from "../Context/ductionaryAppContext";
-
-// const onClickHandler = (data, navigation)=>{
-//     navigation.navigate('Dictionary')
-// }
+import { View, Text, FlatList, TouchableOpacity, StyleSheet} from "react-native";
 
 export const Result = ({ data, navigation }: any) => {
 
-  const Item = ({item}) => {  
+  const Item = ({item}:any) => {  
 
     const {phonetic, meanings: [{ definitions: [{ definition }] }], word } = item
   
@@ -19,7 +11,7 @@ export const Result = ({ data, navigation }: any) => {
     return (
       <TouchableOpacity onPress={()=>navigation.navigate('Dictionary', {word, phonetic})}>
         <View style={styles.listItems}>
-          <Text style={styles.listItemTitle}>{word} data</Text>
+          <Text style={styles.listItemTitle}>{word}</Text>
           <Text style={styles.listItemDefination}>{shortDefination}</Text>
         </View>
       </TouchableOpacity>
@@ -27,12 +19,7 @@ export const Result = ({ data, navigation }: any) => {
   };
 
   
-  const renderItem = ({ item }: any) => {
-    // console.log(item);
-    // const { meanings: [{ definitions: [{ definition }] }], word } = item
-
-    // console.log("MEANING---",item.meanings[0]["definitions"][0]["definition"]);
-    // return (<Item title={item.word} defination={definition} />)
+  const renderItem = ({ item }:any) => {
     return (<Item item={item} />)
   };
 
