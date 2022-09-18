@@ -18,7 +18,7 @@ function tostMessage(msg: string) {
   }
 }
 
-export const Home = (props: any) => {
+export const Home = (props) => {
   const [inputWord, setInputWord] = useState<string>('')
   const { dictionaryData, setDictionaryData } = useContext(DictionaryContext)
 
@@ -74,7 +74,7 @@ export const Home = (props: any) => {
       </View>
       {
         dictionaryData.length != 0
-          ?<Result data={dictionaryData}
+          ?<Result data={dictionaryData} navigation={props.navigation}
           />
           : <RandomWord />
       }

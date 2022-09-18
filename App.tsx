@@ -2,6 +2,7 @@ import { DictionaryContextProvider } from './Context/ductionaryAppContext'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from './Screens/Home';
+import { Word } from './Screens/Word';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +14,7 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home} options={{ title: 'Dictionary' }} />
-        {/* <Stack.Screen name="AsteroidInfo" component={AsteroidInfo} /> */}
+        <Stack.Screen name="Dictionary" component={Word} />
       </Stack.Navigator>
     </NavigationContainer>
   </DictionaryContextProvider>
