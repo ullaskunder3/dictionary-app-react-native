@@ -12,12 +12,12 @@ export const Result = ({ data, navigation }: any) => {
 
   const Item = ({item}) => {  
 
-    const { meanings: [{ definitions: [{ definition }] }], word } = item
+    const {phonetic, meanings: [{ definitions: [{ definition }] }], word } = item
   
     const shortDefination = definition.length < 40 ? definition : definition.substring(0, 50) + '...';
-    
+
     return (
-      <TouchableOpacity onPress={()=>navigation.navigate('Dictionary', item)}>
+      <TouchableOpacity onPress={()=>navigation.navigate('Dictionary', {word, phonetic})}>
         <View style={styles.listItems}>
           <Text style={styles.listItemTitle}>{word} data</Text>
           <Text style={styles.listItemDefination}>{shortDefination}</Text>
